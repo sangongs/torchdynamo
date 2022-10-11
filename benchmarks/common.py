@@ -1685,6 +1685,7 @@ def main(runner, original_dir=None):
 
     if args.verbose:
         torchdynamo.config.log_level = logging.DEBUG
+        torchdynamo.config.verbose = True
 
     if args.quiet:
         torchdynamo.config.log_level = logging.ERROR

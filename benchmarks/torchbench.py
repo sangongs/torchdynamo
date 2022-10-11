@@ -289,6 +289,7 @@ class TorchBenchmarkRunner(BenchmarkRunner):
         else:
             model, example_inputs = benchmark.get_module()
 
+        print(model)
         # Models that must be in train mode while training
         if is_training and (not use_eval_mode or model_name in ONLY_TRAINING_MODE):
             model.train()

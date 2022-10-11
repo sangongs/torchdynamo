@@ -106,7 +106,7 @@ class triton:
     max_tiles = 2
 
     # use triton.autotune?
-    autotune = True
+    autotune = os.getenv("INDUCTOR_TRITON_AUTOTUNE", "1") == "1"
 
     use_bmm = False
 

@@ -100,6 +100,12 @@ def compile_fx_inner(
     graph = GraphLowering(gm, num_dynamic_inputs=len(example_inputs))
     with V.set_graph_handler(graph):
         graph.run(*example_inputs)
+        print("==========IR inputs===========")
+        print(graph.graph_inputs)
+        print("==========IR buffers==========")
+        print(graph.buffers)
+        print("==========IR outputs============")
+        print(graph.graph_outputs)
         compiled_fn = graph.compile_to_fn()
 
     complex_memory_overlap_inputs = any(

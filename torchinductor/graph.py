@@ -79,6 +79,7 @@ class GraphLowering(torch.fx.Interpreter):
 
     def __init__(self, gm: torch.fx.GraphModule, num_dynamic_inputs=None):
         super().__init__(gm)
+        gm.graph.print_tabular()
         self.sizevars = SizeVarAllocator("s")
         self.graph_inputs = {}
         self.graph_inputs_original = {}

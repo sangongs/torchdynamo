@@ -901,12 +901,16 @@ class Scheduler:
 
         if node1.get_names() & node2.recursive_predecessors:
             # node2 depends on node1 outputs
+            if os.getenv("INDUCTOR_CAN_FUSE_VERTICAL", "1") == "0":
+                return False
             if not self.can_fuse_vertical(node1, node2):
                 return False
             if node1.is_template():
                 return template_can_fuse(node1, node2)
             return self.get_backend(device).can_fuse_vertical(node1, node2)
         else:  # nodes don't depend on each other, but may have common reads
+            if os.getenv("INDUCTOR_CAN_FUSE_HORIZONTAL", "1") == "0":
+                return False
             if node1.is_template():
                 return False
             return self.get_backend(device).can_fuse_horizontal(node1, node2)
@@ -1058,6 +1062,7 @@ class Scheduler:
 
     @dynamo_utils.dynamo_timed
     def codegen(self):
+        self.debug_print_nodes("Scheduler.codegen()")
         for node in self.nodes:
             self.buffer_names_no_longer_needed.update(node.last_usage)
 

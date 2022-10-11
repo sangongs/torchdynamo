@@ -294,6 +294,10 @@ def triton_config(size_hints, x, y=None, z=None, num_stages=1) -> Config:
     if z:
         cfg["ZBLOCK"] = z
     num_warps = next_power_of_2(min(max(conditional_product(x, y, z) // 256, 1), 8))
+    if os.getenv("INDUCTOR_TRITON_NUMWARPS", "0") != "0":
+        num_warps = int(os.getenv("INDUCTOR_TRITON_NUMWARPS", "0"))
+    if os.getenv("INDUCTOR_TRITON_NUMSTAGES", "0") != "0":
+        num_stages = int(os.getenv("INDUCTOR_TRITON_NUMSTAGES", "0"))
     return Config(cfg, num_warps=num_warps, num_stages=num_stages)
 
 
@@ -320,6 +324,10 @@ def triton_config_reduction(size_hints, x, r, num_stages=2) -> Config:
 
     cfg = {"XBLOCK": x, "RBLOCK": r}
     num_warps = next_power_of_2(min(max(conditional_product(x, r) // 128, 1), 8))
+    if os.getenv("INDUCTOR_TRITON_NUMWARPS", "0") != "0":
+        num_warps = int(os.getenv("INDUCTOR_TRITON_NUMWARPS", "0"))
+    if os.getenv("INDUCTOR_TRITON_NUMSTAGES", "0") != "0":
+        num_stages = int(os.getenv("INDUCTOR_TRITON_NUMSTAGES", "0"))
     return Config(cfg, num_warps=num_warps, num_stages=num_stages)
 
 
